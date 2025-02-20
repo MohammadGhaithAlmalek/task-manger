@@ -1,0 +1,12 @@
+### Signup User
+POST http://localhost:3000/auth/signup
+Content-Type: application/json
+
+{
+    "fullName": "ghaith almalek",
+    "email": "ghaith21@gmail.com",
+    "password": "123456"
+}
+###profile
+GET http://localhost:3000/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdoYWl0aDIxQGdtYWlsLmNvbSIsInN1YiI6MywiaWF0IjoxNzQwMDM4NzM2LCJleHAiOjE3NDAxMjUxMzZ9.gQUnpBmX_fEf0OJNOV99ripRN9ICOALMs8r73Q6HIBo
