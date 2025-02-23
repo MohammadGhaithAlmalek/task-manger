@@ -9,4 +9,39 @@ Content-Type: application/json
 }
 ###profile
 GET http://localhost:3000/profile
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdoYWl0aDIxQGdtYWlsLmNvbSIsInN1YiI6MywiaWF0IjoxNzQwMDM4NzM2LCJleHAiOjE3NDAxMjUxMzZ9.gQUnpBmX_fEf0OJNOV99ripRN9ICOALMs8r73Q6HIBo
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdoYWl0aDIxQGdtYWlsLmNvbSIsInN1YiI6MywiaWF0IjoxNzQwMjk5ODQwLCJleHAiOjE3NDAzODYyNDB9.cHy92B8pX00nopCsXbMIecsLTG9hiqiTJFu3SmSK2o4
+
+
+###create-task
+POST  http://localhost:3000/tasks/create-task
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdoYWl0aDIxQGdtYWlsLmNvbSIsInN1YiI6MywiaWF0IjoxNzQwMjk5ODQwLCJleHAiOjE3NDAzODYyNDB9.cHy92B8pX00nopCsXbMIecsLTG9hiqiTJFu3SmSK2o4
+Content-Type: application/json
+
+{
+    "title": "third task",
+    "status": "Pending"
+}
+
+
+###Get user tasks
+GET  http://localhost:3000/tasks/get-user-tasks
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdoYWl0aDIxQGdtYWlsLmNvbSIsInN1YiI6MywiaWF0IjoxNzQwMjk5ODQwLCJleHAiOjE3NDAzODYyNDB9.cHy92B8pX00nopCsXbMIecsLTG9hiqiTJFu3SmSK2o4
+
+
+
+###Get user tasks
+GET  http://localhost:3000/tasks/get-task/4
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdoYWl0aDIxQGdtYWlsLmNvbSIsInN1YiI6MywiaWF0IjoxNzQwMjk5ODQwLCJleHAiOjE3NDAzODYyNDB9.cHy92B8pX00nopCsXbMIecsLTG9hiqiTJFu3SmSK2o4
+
+###Get user tasks
+PUT   http://localhost:3000/tasks/update-task/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdoYWl0aDIxQGdtYWlsLmNvbSIsInN1YiI6MywiaWF0IjoxNzQwMjk5ODQwLCJleHAiOjE3NDAzODYyNDB9.cHy92B8pX00nopCsXbMIecsLTG9hiqiTJFu3SmSK2o4
+Content-Type: application/json
+
+{
+    "status": "In Progress"
+}
+
+###Get user tasks
+DELETE   http://localhost:3000/tasks/delete-task/3
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImdoYWl0aDIxQGdtYWlsLmNvbSIsInN1YiI6MywiaWF0IjoxNzQwMjk5ODQwLCJleHAiOjE3NDAzODYyNDB9.cHy92B8pX00nopCsXbMIecsLTG9hiqiTJFu3SmSK2o4

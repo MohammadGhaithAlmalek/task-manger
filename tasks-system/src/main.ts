@@ -11,6 +11,7 @@ async function bootstrap() {
     .setTitle('task-manger')
     .setDescription('The task manger Api documentation')
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, config); //2
   SwaggerModule.setup('api', app, document); //3
