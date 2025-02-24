@@ -1,54 +1,113 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { PrismaService } from 'src/prisma.service';
+import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
 
 @Injectable()
 export class TasksService {
   constructor(private prisma: PrismaService) {}
 
   async create(createTaskDto: CreateTaskDto, userId: number) {
-    const createTask = await this.prisma.task.create({
-      data: { ...createTaskDto, userId: userId },
-    });
-    return createTask;
+    try {
+      const createTask = await this.prisma.task.create({
+        data: { ...createTaskDto, userId },
+      });
+      return createTask;
+    } catch (error) {
+      if (error instanceof PrismaClientKnownRequestError) {
+        // Handle Foreign Key Violation (if userId does not exist)
+        if (error.code === 'P2003') {
+          throw new BadRequestException(
+            'Invalid user ID: User does not exist.',
+          );
+        }
+      }
+
+      throw new InternalServerErrorException(
+        'An error occurred while creating the task.',
+      );
+    }
   }
 
   async getUserTasks(userId: number) {
-    return await this.prisma.task.findMany({
-      where: { userId: userId }, // Filters tasks for the specific user
-    });
+    try {
+      const tasks = await this.prisma.task.findMany({
+        where: { userId },
+      });
+
+      if (!tasks.length) {
+        throw new NotFoundException(
+          `No tasks found for user with ID ${userId}`,
+        );
+      }
+
+      return tasks;
+    } catch (error) {
+      console.error('Error fetching user tasks:', error);
+      throw new InternalServerErrorException('Could not retrieve user tasks');
+    }
   }
 
   async findOneTask(id: number, userId: number) {
-    const oneTask = await this.prisma.task.findFirst({
-      where: {
-        id: id,
-        userId: userId,
-      },
-    });
-    if (!oneTask) {
-      throw new NotFoundException('Task not found or does not belong to you');
+    try {
+      const oneTask = await this.prisma.task.findFirst({
+        where: {
+          id,
+          userId,
+        },
+      });
+
+      if (!oneTask) {
+        throw new NotFoundException('Task not found or does not belong to you');
+      }
+
+      return oneTask;
+    } catch (error) {
+      console.error('Error fetching task:', error);
+      throw new InternalServerErrorException('Could not retrieve the task');
     }
-    return oneTask;
   }
 
   async updateTask(id: number, updateTaskDto: UpdateTaskDto, userId: number) {
-    return this.prisma.task.update({
-      where: {
-        id,
-        userId,
-      },
-      data: updateTaskDto,
-    });
+    try {
+      const task = await this.prisma.task.findFirst({
+        where: { id, userId },
+      });
+
+      if (!task) {
+        throw new NotFoundException('Task not found or does not belong to you');
+      }
+
+      return await this.prisma.task.update({
+        where: { id },
+        data: updateTaskDto,
+      });
+    } catch (error) {
+      console.error('Error updating task:', error);
+      throw new InternalServerErrorException('Could not update the task');
+    }
   }
 
-  removeTask(id: number, userId: number) {
-    return this.prisma.task.delete({
-      where: {
-        id,
-        userId,
-      },
-    });
+  async removeTask(id: number, userId: number) {
+    try {
+      const task = await this.prisma.task.findFirst({
+        where: { id, userId },
+      });
+      if (!task) {
+        throw new NotFoundException('Task not found or does not belong to you');
+      }
+      return await this.prisma.task.delete({
+        where: { id },
+      });
+    } catch (error) {
+      console.error('Error deleting task:', error);
+      throw new InternalServerErrorException('Could not delete the task');
+    }
   }
 }

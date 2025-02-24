@@ -7,7 +7,6 @@ import {
 import * as bcrypt from 'bcryptjs';
 import { PrismaService } from 'src/prisma.service';
 import { JwtService } from '@nestjs/jwt';
-import { PayloadType } from './types';
 @Injectable()
 export class AuthService {
   constructor(
